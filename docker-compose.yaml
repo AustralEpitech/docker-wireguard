@@ -1,0 +1,16 @@
+---
+version: "3.7"
+
+services:
+  app:
+    build: wireguard
+    restart: always
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "443:443"
+    volumes:
+      - config:/etc/wireguard/
+
+volumes:
+  config:
