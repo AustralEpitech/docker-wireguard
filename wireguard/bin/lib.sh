@@ -31,10 +31,13 @@ if [ -t 1 ]; then
     export RED='\e[31m'
 fi
 
-export WIREGUARD_DIR=/etc/wireguard/
+export WIREGUARD_DIR=/etc/wireguard
 export WIREGUARD_CONF="$WIREGUARD_DIR/wg0.conf"
 
-if ! mkdir -m 700 -p "$WIREGUARD_DIR"; then
-    echo 'Try again with sudo' 1>&2
+if ! (set -e
+    mkdir -p "$WIREGUARD_DIR"
+    chmod 700 "$WIREGUARD_DIR"
+); then
+    echo "Try again with sudo." 1>&2
     exit 1
 fi

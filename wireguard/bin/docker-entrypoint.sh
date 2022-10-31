@@ -1,5 +1,5 @@
 #!/bin/bash
-. lib.sh
+. "$(dirname "$0")/lib.sh"
 
 function get_local_ip4() {
     ip -4 route get 1 | grep -oP '(\d{1,3}\.){3}\d{1,3}(?= uid)'
