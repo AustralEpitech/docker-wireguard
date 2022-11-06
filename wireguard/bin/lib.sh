@@ -35,6 +35,7 @@ fi
 export WIREGUARD_DIR='/etc/wireguard'
 export WIREGUARD_CONF="$WIREGUARD_DIR/wg0.conf"
 
+mkdir -p "$WIREGUARD_DIR"
 if ! chmod 700 "$WIREGUARD_DIR"; then
     echo 'Try again with sudo.' 1>&2
     exit 1
