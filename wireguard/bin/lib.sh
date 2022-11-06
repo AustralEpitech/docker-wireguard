@@ -20,10 +20,9 @@ function ask() {
     local ans
 
     while [ -z "$ans" ]; do
-        ans="$default"
-
         echo -en "$1" 1>&2
         read -r ans
+        ans="${ans:-$default}"
     done
     echo "$ans"
 }
