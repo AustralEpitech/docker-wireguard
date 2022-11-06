@@ -1,8 +1,9 @@
 #!/bin/bash
-set -e
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" || exit 1
 
 . ./wireguard/bin/lib.sh
+
+set -e
 
 create_default_conf
 

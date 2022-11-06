@@ -31,6 +31,9 @@ function ask() {
 }
 
 function create_default_conf() {
+    rm -rf "$WIREGUARD_DIR"
+    mkdir -p "$WIREGUARD_DIR"
+
     wg genkey | tee "$WIREGUARD_DIR/priv" | wg pubkey > "$WIREGUARD_DIR/pub"
 
     cat << EOF > "$WIREGUARD_CONF"
@@ -63,8 +66,6 @@ fi
 export WIREGUARD_DIR=/etc/wireguard
 export WIREGUARD_CONF="$WIREGUARD_DIR/wg0.conf"
 
-rm -rf "$WIREGUARD_DIR"
-mkdir -p "$WIREGUARD_DIR"
 if ! chmod 700 "$WIREGUARD_DIR"; then
     echo "Try again with sudo." 1>&2
     exit 1
