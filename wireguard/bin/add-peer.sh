@@ -1,7 +1,7 @@
 #!/bin/bash
-. "$(dirname "$0")/lib.sh"
+. lib.sh
 
-COUNT=$(grep -c AllowedIPs "$WIREGUARD_CONF")
+COUNT="$(grep -c AllowedIPs "$WIREGUARD_CONF")"
 IP="10.0.0.$((COUNT + 1))"
 
 while [ -z "$PUB" ]; do
