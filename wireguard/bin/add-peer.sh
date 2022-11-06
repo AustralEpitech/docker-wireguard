@@ -2,11 +2,16 @@
 . "$(dirname "$0")/lib.sh"
 
 COUNT=$(grep -c AllowedIPs "$WIREGUARD_CONF")
-IP="10.0.0.$((COUNT + 1))/24"
+IP="10.0.0.$((COUNT + 1))"
 
-PUB=$(ask 'Peer Public Key: ')
+while [ -z "$PUB" ]; do
+    PUB=$(ask 'Peer Public Key: ')
+    if ! ask_yn 'Is This correct (yes/No)? '; then
+        unset "ans"
+        echo
+    fi
+done
 
-add_peer "$PUB" "$IP"
-echo "Here is your IP: $IP"
-echo -n "Here is the public key of the server:"
-cat "$WIREGUARD_DIR"/pub
+wg set wg0 peer "$PUB" allowed-ips "$IP"
+echo "Here is your IP: $RED$IP$NORMAL"
+echo "Here is the public key of the server: $RED$(cat "$WIREGUARD_DIR/pub")$NORMAL"

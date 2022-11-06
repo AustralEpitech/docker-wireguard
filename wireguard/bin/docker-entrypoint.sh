@@ -7,8 +7,8 @@ function get_local_ip4() {
 
 create_default_conf
 
-ip address add dev wg0 '10.0.0.0'
+ip addr add dev wg0 '10.0.0.0'
 wg setconf wg0 "$WIREGUARD_CONF"
-ip link set up dev wg0
+ip link set wg0 up
 
 exec "$@"

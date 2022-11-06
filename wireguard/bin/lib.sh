@@ -19,18 +19,14 @@ function ask() {
     local ans
 
     while [ -z "$ans" ]; do
-        while [ -z "$ans" ]; do
-            echo -en "$1" 1>&2
-            read -r ans
-        done
-        if ! ask_yn 'Is This correct (yes/No)? '; then
-            unset "$ans"
-        fi
+        echo -en "$1" 1>&2
+        read -r ans
     done
     echo "$ans"
 }
 
 function create_default_conf() {
+    ip link delete dev wg0 type wireguard
     rm -rf "$WIREGUARD_DIR"
     mkdir -p "$WIREGUARD_DIR"
 
@@ -44,18 +40,6 @@ EOF
 
     ip link add dev wg0 type wireguard
     cat "$WIREGUARD_DIR/pub"
-}
-
-function add_peer() {
-    local pub="$1"
-    local addr="$2"
-
-    cat << EOF >> "$WIREGUARD_CONF"
-
-[Peer]
-PublicKey = $pub
-AllowedIPs = $addr
-EOF
 }
 
 if [ -t 1 ]; then

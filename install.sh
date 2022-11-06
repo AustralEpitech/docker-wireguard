@@ -3,21 +3,27 @@ cd "$(dirname "$0")" || exit 1
 
 . ./wireguard/bin/lib.sh
 
-set -e
 
 create_default_conf
 
+set -e
+
 echo 'Now you need to add the key above to your server'
 
-IP="$(ask "IP assigned by the server: ")"
-PUB=$(ask 'Server public key: ')
+while [ -z "$IP" ]; do
+    IP="$(ask "IP assigned by the server: ")"
+    PUB="$(ask 'Server public key: ')"
+    URL="$(ask 'Server address (ADDR:PORT): ')"
+    if ! ask_yn 'Is This correct (yes/No)? '; then
+        unset "IP"
+        echo
+    fi
+done
 
-./wireguard/bin/add-peer.sh "$PUB" "0.0.0.0/0"
+wg set wg0 peer "$PUB" allowed-ips "0.0.0.0/0" endpoint "$URL"
 
-echo "Endpoint = $(ask "Server URL: ")" >> "$WIREGUARD_CONF"
-
-ip address add dev wg0 "$IP"
+ip addr add dev wg0 "$IP"
 wg setconf wg0 "$WIREGUARD_CONF"
-ip link set up dev wg0
+ip link set wg0
 
 #wg quick
