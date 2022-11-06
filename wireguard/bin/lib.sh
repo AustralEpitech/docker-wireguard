@@ -1,15 +1,4 @@
 #!/bin/bash
-# shellcheck disable=SC2174
-
-function ask() {
-    local ans
-
-    while [ -z "$ans" ]; do
-        echo -en "$1" 1>&2
-        read -r ans
-    done
-    echo "$ans"
-}
 
 function ask_yn() {
     local ans
@@ -26,6 +15,46 @@ function ask_yn() {
     esac
 }
 
+function ask() {
+    local ans
+
+    while [ -z "$ans" ]; do
+        while [ -z "$ans" ]; do
+            echo -en "$1" 1>&2
+            read -r ans
+        done
+        if ! ask_yn 'Is This correct (yes/No)? '; then
+            unset "$ans"
+        fi
+    done
+    echo "$ans"
+}
+
+function create_default_conf() {
+    wg genkey | tee "$WIREGUARD_DIR/priv" | wg pubkey > "$WIREGUARD_DIR/pub"
+
+    cat << EOF > "$WIREGUARD_CONF"
+[Interface]
+PrivateKey = $(cat "$WIREGUARD_DIR/priv")
+ListenPort = 443
+EOF
+
+    ip link add dev wg0 type wireguard
+    cat "$WIREGUARD_DIR/pub"
+}
+
+function add_peer() {
+    local pub="$1"
+    local addr="$2"
+
+    cat << EOF >> "$WIREGUARD_CONF"
+
+[Peer]
+PublicKey = $pub
+AllowedIPs = $addr
+EOF
+}
+
 if [ -t 1 ]; then
     export NORMAL='\e[0m'
     export RED='\e[31m'
@@ -34,10 +63,9 @@ fi
 export WIREGUARD_DIR=/etc/wireguard
 export WIREGUARD_CONF="$WIREGUARD_DIR/wg0.conf"
 
-if ! (set -e
-    mkdir -p "$WIREGUARD_DIR"
-    chmod 700 "$WIREGUARD_DIR"
-); then
+rm -rf "$WIREGUARD_DIR"
+mkdir -p "$WIREGUARD_DIR"
+if ! chmod 700 "$WIREGUARD_DIR"; then
     echo "Try again with sudo." 1>&2
     exit 1
 fi
