@@ -2,6 +2,7 @@ FROM debian
 EXPOSE 443
 VOLUME /etc/wireguard/
 RUN apt-get update && apt-get install -y \
+        gettext-base                     \
         iproute2                         \
         wireguard-tools &&               \
     apt-get clean &&                     \
