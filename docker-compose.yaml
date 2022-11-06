@@ -4,7 +4,7 @@ version: "3.7"
 services:
   app:
     build: wireguard
-    restart: always
+    restart: unless_stopped
     cap_add:
       - NET_ADMIN
     ports:
