@@ -2,7 +2,7 @@
 . lib.sh
 
 COUNT="$(grep -c AllowedIPs "$WIREGUARD_CONF")"
-IP="10.0.0.$((COUNT + 1))"
+IP="10.0.0.$((COUNT + 2))"
 
 while [ -z "$PUB" ]; do
     PUB=$(ask 'Peer Public Key: ')
@@ -14,4 +14,4 @@ done
 
 wg set wg0 peer "$PUB" allowed-ips "$IP"
 echo -e "Here is your IP: $RED$IP$NORMAL"
-echo -e "Here is the public key of the server: $RED$(cat "$WIREGUARD_DIR/pub")$NORMAL"
+echo -e "Here is the public key of the server: $RED$(cat "$WIREGUARD_DIR/pub.key")$NORMAL"
