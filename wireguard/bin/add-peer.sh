@@ -19,5 +19,7 @@ PublicKey = $PEER_PUB
 AllowedIPs = $IP
 EOF
 
+wg setconf wg0 /dev/fd/63
+
 echo -e "Here is your IP: $RED$IP$NORMAL"
 echo -e "Here is the public key of the server: $RED$(wg show wg0 private-key)$NORMAL"
