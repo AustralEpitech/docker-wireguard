@@ -3,6 +3,7 @@ EXPOSE 443
 VOLUME /etc/wireguard/
 RUN apt-get update && apt-get install -y \
         iproute2                         \
+        iptables                         \
         wireguard-tools &&               \
     apt-get clean &&                     \
     rm -rf /var/lib/apt/
