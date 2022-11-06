@@ -13,5 +13,5 @@ while [ -z "$PUB" ]; do
 done
 
 wg set wg0 peer "$PUB" allowed-ips "$IP"
-echo "Here is your IP: $RED$IP$NORMAL"
-echo "Here is the public key of the server: $RED$(cat "$WIREGUARD_DIR/pub")$NORMAL"
+echo -e "Here is your IP: $RED$IP$NORMAL"
+echo -e "Here is the public key of the server: $RED$(cat "$WIREGUARD_DIR/pub")$NORMAL"
