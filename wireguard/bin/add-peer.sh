@@ -16,7 +16,7 @@ cat << EOF >> "$WIREGUARD_CONF"
 
 [Peer]
 PublicKey = $PEER_PUB
-AllowedIPs = $IP
+AllowedIPs = $IP/32
 EOF
 
 wg setconf wg0 /dev/fd/63

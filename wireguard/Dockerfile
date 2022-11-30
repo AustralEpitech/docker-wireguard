@@ -1,4 +1,4 @@
-FROM debian
+FROM debian:11-slim
 EXPOSE 443
 VOLUME /etc/wireguard/
 RUN apt-get update && apt-get install -y \
