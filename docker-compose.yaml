@@ -8,7 +8,9 @@ services:
     cap_add:
       - NET_ADMIN
     ports:
-      - "443:443"
+      - "443:443/udp"
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
     volumes:
       - config:/etc/wireguard/
 

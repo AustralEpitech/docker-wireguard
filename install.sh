@@ -1,10 +1,9 @@
 #!/bin/bash
-cd "$(dirname "$0")" || exit 1
-. ./wireguard/bin/lib.sh
-
-ip link delete dev wg0 type wireguard
-
 set -e
+cd "$(dirname "$0")"
+. ./wireguard/bin/lib.sh || true
+
+ip link del dev wg0 || true
 
 PRIV="$(wg genkey)"
 PUB="$(wg pubkey <<< "$PRIV")"

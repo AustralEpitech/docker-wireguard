@@ -12,14 +12,14 @@ while [ -z "$PEER_PUB" ]; do
     fi
 done
 
+wg-quick down wg0
 cat << EOF >> "$WIREGUARD_CONF"
 
 [Peer]
 PublicKey = $PEER_PUB
 AllowedIPs = $IP/32
 EOF
-
-wg setconf wg0 /dev/fd/63
+wg-quick up wg0
 
 echo -e "Here is your IP: $RED$IP$NORMAL"
-echo -e "Here is the public key of the server: $RED$(wg show wg0 private-key)$NORMAL"
+echo -e "Here is the public key of the server: $RED$(wg show wg0 public-key)$NORMAL"
